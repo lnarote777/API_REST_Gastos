@@ -38,10 +38,10 @@ Esta tabla contendrá la información del tipo de gasto que sea. Por ejemplo: `C
 
 - **Estructura**
 
-| Campo      | Tipo | Descripción                     |
-|------------| ---- |---------------------------------|
-| `id`       | Long | Identificador único del tipo de gasto |
-| `tipo`     | String | Nombre del tipo de gasto  |
+| Campo  | Tipo | Descripción                     |
+|--------| ---- |---------------------------------|
+| `id`   | Long | Identificador único del tipo de gasto |
+| `name` | String | Nombre del tipo de gasto  |
 
 - **Endpoints**
 
@@ -55,21 +55,22 @@ Aquí se almacenarán todos los datos respecto al gasto.
 
 - **Estructura**
 
-| Campo        | Tipo   | Descripción |
-|--------------|--------| ----------- |
-| `name`       | String | Identificador único del usuario |
-| `cantidad`   | Double | Nombre de usuario |
-| `fecha`      | Date   | Contraseña cifrada para la autenticación |
-| `comentario` | String | Contraseña cifrada para la autenticación |
+| Campo        | Tipo      | Descripción                     |
+|--------------|-----------|---------------------------------|
+| `id`       | Long | Identificador único del gasto |
+| `name`       | String | Nombre del gasto |
+| `cantidad`   | Double | Monto del gasto |
+| `fecha`      | Date   | Fecha del gasto |
+| `comentario` | String | Descripción o comentario adicional |
 
 - **Endpoints**
 
 | Método | Endpoint                  | Descripción |
 |--------|---------------------------| ----------- |
-| POST   | `/gastosDiarios`          | Identificador único del usuario |
-| GET    | `/gastosDiarios`          | Nombre de usuario |
-| GET    | `/gastosDiarios/{nombre}` | Contraseña cifrada para la autenticación |
-| DELETE | `/gastosDiarios/{nombre}` | Contraseña cifrada para la autenticación |
+| POST   | `/gastosDiarios`          | Regisra un nuevo gasto diario|
+| GET    | `/gastosDiarios`          | Recupera todos los gastos diarios del usuario |
+| GET    | `/gastosDiarios/{name}` | Obtiene un gasto específico específico. |
+| DELETE | `/gastosDiarios/{id}` | Elimina un gasto especifico por su id |
 
 ## Lógica de negocio
 
@@ -96,9 +97,13 @@ Aquí se almacenarán todos los datos respecto al gasto.
 
 ## Restricciones de seguridad
 
-1. Autenticación de usuarios
-2. Validación de datos
-3. Cifrado de contraseñas
-
+1. Autenticación obligatoria:
+   Se requiere que todos los usuarios se autentiquen con un token único para acceder a los recursos.
+2. Validación de datos:
+   Se aplican reglas estrictas para verificar los datos enviados por los clientes, evitando valores inválidos o maliciosos.
+3. Cifrado de contraseñas:
+   Las contraseñas se almacenan cifradas utilizando algoritmos como bcrypt.
+4. Roles de usuario:
+   Los usuarios con rol ADMIN tienen permisos adicionales, como gestionar tipos de gastos.
 
 

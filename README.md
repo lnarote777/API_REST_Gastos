@@ -20,7 +20,6 @@ Esta tabla será donde se guarde a cada usuario que servirá para identificar a 
 
 | Campo | Tipo | Descripción |
 | ----- | ---- | ----------- |
-| `id` | Long | Identificador único del usuario |
 | `name` | String | Nombre de usuario |
 | `password` | String | Contraseña cifrada para la autenticación |
 

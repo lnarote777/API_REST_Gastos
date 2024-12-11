@@ -18,11 +18,12 @@ Esta tabla será donde se guarde a cada usuario que servirá para identificar a 
 
 - **Estructura**
 
-| Campo | Tipo | Descripción |
-| ----- | ---- | ----------- |
-| `rol` | String | Rol del usuario (`USER` o `ADMIN`) |
-| `name` | String | Nombre de usuario |
+| Campo      | Tipo   | Descripción                              |
+|------------|--------|------------------------------------------|
+| `id`       | Long   | Identificador del usuario                |
+| `name`     | String | Nombre de usuario                        |
 | `password` | String | Contraseña cifrada para la autenticación |
+| `rol`      | String | Rol del usuario (`USER` o `ADMIN`)       |
 
 - **Endpoints**
 

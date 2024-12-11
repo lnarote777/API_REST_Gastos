@@ -20,6 +20,7 @@ Esta tabla será donde se guarde a cada usuario que servirá para identificar a 
 
 | Campo | Tipo | Descripción |
 | ----- | ---- | ----------- |
+| `rol` | String | Rol del usuario (`USER` o `ADMIN`) |
 | `name` | String | Nombre de usuario |
 | `password` | String | Contraseña cifrada para la autenticación |
 

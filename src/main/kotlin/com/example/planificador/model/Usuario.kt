@@ -9,9 +9,9 @@ data class Usuario(
     var id: Long? = null,
 
     @Column(unique = true, nullable = false)
-    val username: String,
+    var username: String,
     var password: String,
 
     @Column(nullable = false)
-    val roles: String? = null,
+    var roles: String? = null,
 )

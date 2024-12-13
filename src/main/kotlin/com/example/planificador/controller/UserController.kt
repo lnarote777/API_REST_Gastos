@@ -2,6 +2,7 @@ package com.example.planificador.controller
 
 import com.example.planificador.error.exception.BadRequestException
 import com.example.planificador.model.Usuario
+import com.example.planificador.repository.UsuarioRepository
 import com.example.planificador.service.TokenService
 import com.example.planificador.service.UserService
 import org.springframework.beans.factory.annotation.Autowired
@@ -10,10 +11,7 @@ import org.springframework.http.ResponseEntity
 import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.Authentication
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 import javax.naming.AuthenticationException
 
 @RestController
@@ -59,4 +57,33 @@ class UserController {
 
         return ResponseEntity(newUser, HttpStatus.CREATED)
     }
+
+    @DeleteMapping("/delete/{username}")
+    fun delete(
+        @PathVariable username: String?
+    ): ResponseEntity<Usuario>?{
+
+        if (username == null){
+            throw BadRequestException("El nombre de usuario no puede estar en blanco.")
+        }
+
+        val user = userService.delete(username)
+
+        return ResponseEntity(user, HttpStatus.OK)
+    }
+
+    @PutMapping("/update/{username}")
+    fun update(
+        @RequestBody userUpdate: Usuario?
+    ): ResponseEntity<Usuario>?{
+        if (userUpdate == null){
+            throw BadRequestException("El usuario no puede estar vacío.")
+        }
+
+        val updateUser = userService.update(userUpdate)
+
+        return ResponseEntity(updateUser, HttpStatus.OK)
+
+    }
+
 }

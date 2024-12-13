@@ -1,9 +1,11 @@
 package com.example.planificador.service
 
+import com.example.planificador.error.exception.UserNotFoundException
 import com.example.planificador.model.Usuario
 import com.example.planificador.repository.UsuarioRepository
 import org.apache.coyote.BadRequestException
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.data.repository.findByIdOrNull
 import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.core.userdetails.User
@@ -57,5 +59,26 @@ class UserService: UserDetailsService {
         userRespository.save(newUsuario)
 
         return newUsuario
+    }
+
+    fun delete(username: String): Usuario {
+        val usuario = userRespository.findByUsername(username).orElseThrow{UserNotFoundException("No se encontró al usuario con nombre: $username")}
+        userRespository.delete(usuario)
+        return usuario
+    }
+
+    fun update(updateUser: Usuario): Usuario{
+        val usuario = updateUser.id?.let { userRespository.findById(it).orElseThrow{UserNotFoundException("No se encontró al usuario")}}
+
+        if (usuario != null) {
+            usuario.username = updateUser.username
+            usuario.password = passwordEncoder.encode(updateUser.password)
+            if (updateUser.roles?.uppercase() != "ADMIN" && updateUser.roles?.uppercase() != "USER") {
+                throw BadRequestException("El campo rol es obligatorio")
+            }
+            usuario.roles = updateUser.roles
+            return userRespository.save(usuario)
+        }
+        throw UserNotFoundException("No se encontro ningún usuario con id: ${updateUser.id}")
     }
 }

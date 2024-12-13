@@ -15,7 +15,7 @@ class TipoGastosController {
     @Autowired
     private lateinit var tipoGastoService: TipoGastoService
 
-    @PostMapping("/")
+    @PostMapping("/nuevoTipo")
     fun newTipo(
         @RequestBody tipo: TipoGasto?
     ): ResponseEntity<TipoGasto>{

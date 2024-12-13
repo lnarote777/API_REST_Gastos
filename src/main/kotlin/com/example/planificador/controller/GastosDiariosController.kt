@@ -47,11 +47,11 @@ class GastosDiariosController {
         return ResponseEntity(list, HttpStatus.OK)
     }
 
-    @DeleteMapping("/delete/{name}")
+    @DeleteMapping("/delete/{id}")
     fun delete(
-        @PathVariable name: String
+        @PathVariable id: String
     ): ResponseEntity<Gasto>{
-        val gasto = gastoService.delete(name)
+        val gasto = gastoService.delete(id)
         return ResponseEntity(gasto, HttpStatus.OK)
     }
 

@@ -9,6 +9,7 @@ import com.nimbusds.jose.proc.SecurityContext
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import org.springframework.http.HttpMethod
 import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.config.Customizer
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration
@@ -35,7 +36,14 @@ class SecurityConfig {
         return http
             .csrf { csrf -> csrf.disable() }
             .authorizeHttpRequests { auth -> auth
+                //gastos Diarios
+                .requestMatchers("/gastosDiarios/**").authenticated()
+                //tipos de gastos
+                .requestMatchers("/tipos/nuevoTipo").hasRole("ADMIN")
+                .requestMatchers(HttpMethod.DELETE,"/tipos/delete/{name}").hasRole("ADMIN")
+                //users
                 .requestMatchers("/usuarios/login").permitAll()
+                .requestMatchers("/usuarios/register").permitAll()
                 .anyRequest().permitAll()
             }
             .oauth2ResourceServer { oauth2 -> oauth2.jwt(Customizer.withDefaults()) }

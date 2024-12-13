@@ -14,13 +14,13 @@ import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
 
-@Controller("/gastosDiarios")
+@Controller("/gastos_diarios")
 class GastosDiariosController {
 
     @Autowired
     private lateinit var gastoService: GastoDiarioService
 
-    @PostMapping("/nuevoGasto")
+    @PostMapping("/nuevo_gasto")
     fun nuevoGasto(
         @RequestBody newGasto: Gasto?
     ):ResponseEntity<Gasto>{

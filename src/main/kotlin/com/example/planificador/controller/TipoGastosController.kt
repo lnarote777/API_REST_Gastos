@@ -15,7 +15,7 @@ class TipoGastosController {
     @Autowired
     private lateinit var tipoGastoService: TipoGastoService
 
-    @PostMapping("/nuevoTipo")
+    @PostMapping("/nuevo_tipo")
     fun newTipo(
         @RequestBody tipo: TipoGasto?
     ): ResponseEntity<TipoGasto>{
@@ -29,11 +29,11 @@ class TipoGastosController {
         return ResponseEntity(tipoGasto, HttpStatus.CREATED)
     }
 
-    @GetMapping("/{nameTipo}")
+    @GetMapping("/{name}")
     fun getByName(
-        @PathVariable nameTipo: String
+        @PathVariable name: String
     ): ResponseEntity<TipoGasto>{
-        val tipoGasto = tipoGastoService.getTipoGasto(nameTipo)
+        val tipoGasto = tipoGastoService.getTipoGasto(name)
         return ResponseEntity(tipoGasto, HttpStatus.OK)
     }
 

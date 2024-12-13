@@ -37,9 +37,9 @@ class SecurityConfig {
             .csrf { csrf -> csrf.disable() }
             .authorizeHttpRequests { auth -> auth
                 //gastos Diarios
-                .requestMatchers("/gastosDiarios/**").authenticated()
+                .requestMatchers("/gastos_diarios/**").authenticated()
                 //tipos de gastos
-                .requestMatchers("/tipos/nuevoTipo").hasRole("ADMIN")
+                .requestMatchers("/tipos/nuevo_tipo").hasRole("ADMIN")
                 .requestMatchers(HttpMethod.DELETE,"/tipos/delete/{name}").hasRole("ADMIN")
                 //users
                 .requestMatchers("/usuarios/login").permitAll()

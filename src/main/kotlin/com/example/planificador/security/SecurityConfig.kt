@@ -1,4 +1,5 @@
-package com.es.jwtSecurityKotlin.security
+package com.example.planificador.security
+
 import com.nimbusds.jose.jwk.JWK
 import com.nimbusds.jose.jwk.JWKSet
 import com.nimbusds.jose.jwk.RSAKey
@@ -8,7 +9,6 @@ import com.nimbusds.jose.proc.SecurityContext
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
-import org.springframework.http.HttpMethod
 import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.config.Customizer
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration
@@ -33,10 +33,11 @@ class SecurityConfig {
     @Bean
     fun securityFilterChain(http: HttpSecurity): SecurityFilterChain {
         return http
-            .csrf { csrf -> csrf.disable() } // Cross-Site Forgery
+            .csrf { csrf -> csrf.disable() }
             .authorizeHttpRequests { auth -> auth
-                .anyRequest().authenticated()
-            } // Los recursos protegidos y publicos
+                .requestMatchers("/usuarios/login").permitAll()
+                .anyRequest().permitAll()
+            }
             .oauth2ResourceServer { oauth2 -> oauth2.jwt(Customizer.withDefaults()) }
             .sessionManagement { session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS) }
             .httpBasic(Customizer.withDefaults())
@@ -48,18 +49,13 @@ class SecurityConfig {
         return BCryptPasswordEncoder()
     }
 
-    /**
-     * Método que inicializa un objeto de tipo AuthenticationManager
-     */
+
     @Bean
     fun authenticationManager(authenticationConfiguration: AuthenticationConfiguration) : AuthenticationManager {
         return authenticationConfiguration.authenticationManager
     }
 
 
-    /*
-    MÉTODO PARA CODIFICAR UN JWT
-     */
     @Bean
     fun jwtEncoder(): JwtEncoder {
         val jwk: JWK = RSAKey.Builder(rsaKeys.publicKey).privateKey(rsaKeys.privateKey).build()

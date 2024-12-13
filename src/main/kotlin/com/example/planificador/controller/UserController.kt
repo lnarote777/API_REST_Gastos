@@ -1,5 +1,6 @@
 package com.example.planificador.controller
 
+import com.example.planificador.error.exception.BadRequestException
 import com.example.planificador.model.Usuario
 import com.example.planificador.service.TokenService
 import com.example.planificador.service.UserService
@@ -48,8 +49,12 @@ class UserController {
 
     @PostMapping("/register")
     fun register(
-        @RequestBody newUser : Usuario
+        @RequestBody newUser : Usuario?
     ): ResponseEntity<Usuario>?{
+        if (newUser == null){
+            throw BadRequestException("Debe introducir un nombre, contraseña y rol")
+        }
+
         userService.registrar(newUser)
 
         return ResponseEntity(newUser, HttpStatus.CREATED)

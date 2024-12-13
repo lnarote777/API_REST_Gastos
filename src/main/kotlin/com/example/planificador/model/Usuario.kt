@@ -10,7 +10,7 @@ data class Usuario(
 
     @Column(unique = true, nullable = false)
     val username: String,
-    val password: String,
+    var password: String,
 
     @Column(nullable = false)
     val roles: String,

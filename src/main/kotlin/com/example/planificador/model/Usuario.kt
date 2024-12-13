@@ -4,14 +4,14 @@ import jakarta.persistence.*
 
 @Entity
 @Table(name = "usuarios")
-data class User(
+data class Usuario(
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long? = null,
 
     @Column(unique = true, nullable = false)
-    val name: String,
+    val username: String,
     val password: String,
 
     @Column(nullable = false)
-    val role: String,
+    val roles: String,
 )

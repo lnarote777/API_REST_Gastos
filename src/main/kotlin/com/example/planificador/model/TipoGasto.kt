@@ -7,10 +7,10 @@ import jakarta.persistence.*
 data class TipoGasto(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id : Long,
+    val id : Long? = null,
 
     @Column(nullable = false)
-    val name : String,
+    var name : String,
 
     @OneToMany(mappedBy = "tipo", cascade = [CascadeType.ALL])
     val gastosDiarios: List<Gasto> = emptyList()

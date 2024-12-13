@@ -43,7 +43,7 @@ class TipoGastosController {
         return ResponseEntity(list, HttpStatus.OK)
     }
 
-    @DeleteMapping("/{name}")
+    @DeleteMapping("/delete/{name}")
     fun delete(
         @PathVariable name: String
     ): ResponseEntity<TipoGasto>{

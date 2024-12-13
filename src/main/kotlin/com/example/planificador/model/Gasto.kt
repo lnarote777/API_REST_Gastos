@@ -1,25 +1,28 @@
 package com.example.planificador.model
 
 import jakarta.persistence.*
+import java.time.LocalDateTime
 import java.util.*
 
 @Entity
 @Table(name = "gastos_diarios")
 data class Gasto(
-    @Id
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    val id: Long? = null,
+
     @Column(nullable = false)
-    val name: String,
+    var name: String,
 
     @ManyToOne
     @JoinColumn(name = "tipo_gasto_id", nullable = false)
-    val tipo: TipoGasto,
+    var tipo: TipoGasto,
 
     @Column(nullable = false)
-    val cantidad: Double,
+    var cantidad: Double,
 
     @Column(nullable = false)
-    val fecha: Date,
+    var fecha: LocalDateTime,
 
     @Column
-    val comentario: String? = null
+    var comentario: String? = null
 )

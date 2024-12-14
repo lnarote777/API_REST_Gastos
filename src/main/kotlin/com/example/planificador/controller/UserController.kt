@@ -86,4 +86,12 @@ class UserController {
 
     }
 
+    @GetMapping("/{username}")
+    fun getByName(
+        @PathVariable username: String
+    ): ResponseEntity<Usuario>{
+        val usuario = userService.getByName(username)
+        return ResponseEntity(usuario, HttpStatus.OK)
+    }
+
 }

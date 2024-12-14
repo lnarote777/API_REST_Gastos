@@ -81,4 +81,9 @@ class UserService: UserDetailsService {
         }
         throw UserNotFoundException("No se encontro ningún usuario con id: ${updateUser.id}")
     }
+
+    fun getByName(username: String): Usuario {
+        val usuario = userRespository.findByUsername(username).orElseThrow{UserNotFoundException("No se encontro al usuario con nombre: $username")}
+        return usuario
+    }
 }

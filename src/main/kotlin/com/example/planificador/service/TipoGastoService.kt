@@ -33,7 +33,7 @@ class TipoGastoService {
     }
 
     fun getTipoGasto(nameTipo: String): TipoGasto {
-        val tipo = tipoGastoReppository.findByName(nameTipo).orElseThrow{ UserNotFoundException("No se encontró ningún tipo de gasto con nombre: $nameTipo") }
+        val tipo = tipoGastoReppository.findByName(nameTipo).orElseThrow{ TipoNotFoundException("No se encontró ningún tipo de gasto con nombre: $nameTipo") }
         return tipo
     }
 
@@ -52,7 +52,7 @@ class TipoGastoService {
     }
 
     fun delete(nameTipo: String): TipoGasto {
-        val tipo = tipoGastoReppository.findByName(nameTipo).orElseThrow{ UserNotFoundException("No se encontró ningún tipo de gasto con nombre: $nameTipo") }
+        val tipo = tipoGastoReppository.findByName(nameTipo).orElseThrow{ TipoNotFoundException("No se encontró ningún tipo de gasto con nombre: $nameTipo") }
 
         if (tipo.gastosDiarios.isNotEmpty()){
             throw BadRequestException("No se puede eliminar un tipo de gasto asociado a gastos.")

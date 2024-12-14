@@ -2,11 +2,14 @@ package com.example.planificador.service
 
 import com.example.planificador.error.exception.BadRequestException
 import com.example.planificador.error.exception.GastoNotFoundException
+import com.example.planificador.error.exception.TipoNotFoundException
 import com.example.planificador.model.Gasto
 import com.example.planificador.repository.GastoDiarioRepository
+import com.example.planificador.repository.TipoGastoReppository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import java.time.Instant
+import java.time.LocalDate
 import java.time.LocalDateTime
 import java.util.*
 
@@ -14,6 +17,9 @@ import java.util.*
 class GastoDiarioService {
     @Autowired
     private lateinit var gastoDiarioRepository: GastoDiarioRepository
+
+    @Autowired
+    private lateinit var tipoGastoService: TipoGastoService
 
     fun newGastoDiario(newGasto: Gasto):Gasto{
         if (comprobarDatos(newGasto)){
@@ -40,18 +46,11 @@ class GastoDiarioService {
     }
 
     fun delete(id: String):Gasto{
-        try {
-            val idL = id.toLong()
-            val  gasto = gastoDiarioRepository.findById(idL).orElseThrow()
-            if (gasto != null) {
-                gastoDiarioRepository.delete(gasto)
-                return gasto
-            }else{
-                throw GastoNotFoundException("El id debe ser un numero entero.")
-            }
-        }catch (e: Exception){
-            throw NumberFormatException("El id debe ser un numero entero.")
-        }
+        val idL = id.toInt()
+        val  gasto = gastoDiarioRepository.findById(idL)
+            .orElseThrow {GastoNotFoundException("No se encontró ningún gasto con el id: $id")}
+        gastoDiarioRepository.delete(gasto)
+        return gasto
     }
 
     fun getAll():List<Gasto>{
@@ -59,27 +58,24 @@ class GastoDiarioService {
     }
 
     fun getGasto(id:String):Gasto{
-        try {
-            val idL = id.toLong()
-            val  gasto = gastoDiarioRepository.findById(idL).orElseThrow()
-            if (gasto != null) {
-                return gasto
-            }else{
-                throw GastoNotFoundException("El id debe ser un numero entero.")
-            }
-        }catch (e: Exception){
-            throw NumberFormatException("El id debe ser un numero entero.")
-        }
+        val idL = id.toInt()
+        val  gasto = gastoDiarioRepository.findById(idL)
+            .orElseThrow {GastoNotFoundException("No se encontró ningún gasto con el id: $id")}
+        return gasto
     }
 
 
     fun comprobarDatos(gasto: Gasto): Boolean {
-        if (gasto.name.isBlank() || gasto.tipo.name.isBlank()){
+        val tipos = tipoGastoService.getAll()
+        val tipo = tipoGastoService.getTipoGasto(gasto.tipo.name)
+        if (gasto.name.isBlank()){
             throw BadRequestException("Nombre o tipo inválidos.")
         }else if (gasto.fecha.isAfter(LocalDateTime.now())){
             throw BadRequestException("La fecha no puede ser posterior a la fecha actual")
         }else if (gasto.cantidad < 0.0){
             throw BadRequestException("La cantidad debe se un número positivo")
+        }else if (!tipos.any { it == tipo }){
+            throw TipoNotFoundException("No se encontro el tipo de gasto.")
         }
 
         return true

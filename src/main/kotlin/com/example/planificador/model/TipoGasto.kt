@@ -1,5 +1,7 @@
 package com.example.planificador.model
 
+import com.fasterxml.jackson.annotation.JsonBackReference
+import com.fasterxml.jackson.annotation.JsonManagedReference
 import jakarta.persistence.*
 
 @Entity
@@ -13,5 +15,6 @@ data class TipoGasto(
     var name : String,
 
     @OneToMany(mappedBy = "tipo", cascade = [CascadeType.ALL])
-    val gastosDiarios: List<Gasto> = emptyList()
+    @JsonBackReference
+    val gastosDiarios: List<Gasto> = mutableListOf()
 )

@@ -1,20 +1,22 @@
 package com.example.planificador.model
 
+import com.fasterxml.jackson.annotation.JsonManagedReference
 import jakarta.persistence.*
 import java.time.LocalDateTime
-import java.util.*
 
 @Entity
 @Table(name = "gastos_diarios")
 data class Gasto(
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id: Long? = null,
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    val id: Int? = null,
 
     @Column(nullable = false)
     var name: String,
 
     @ManyToOne
     @JoinColumn(name = "tipo_gasto_id", nullable = false)
+    @JsonManagedReference
     var tipo: TipoGasto,
 
     @Column(nullable = false)

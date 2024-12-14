@@ -6,5 +6,5 @@ import org.springframework.stereotype.Repository
 import java.util.*
 
 @Repository
-interface GastoDiarioRepository: JpaRepository<Gasto, Long> {
+interface GastoDiarioRepository: JpaRepository<Gasto, Int> {
 }

@@ -13,8 +13,9 @@ import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
-
-@Controller("/gastos_diarios")
+import org.springframework.web.bind.annotation.RequestMapping
+@Controller
+@RequestMapping("/gastos_diarios")
 class GastosDiariosController {
 
     @Autowired

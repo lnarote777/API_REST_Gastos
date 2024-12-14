@@ -42,6 +42,7 @@ class SecurityConfig {
                 //tipos de gastos
                 .requestMatchers("/tipos/nuevo_tipo").hasRole("ADMIN")
                 .requestMatchers(HttpMethod.DELETE,"/tipos/delete/{name}").hasRole("ADMIN")
+                .requestMatchers("/tipos/").authenticated()
                 //users
                 .requestMatchers("/usuarios/login").permitAll()
                 .requestMatchers("/usuarios/register").permitAll()

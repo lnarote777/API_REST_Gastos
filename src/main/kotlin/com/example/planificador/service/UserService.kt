@@ -30,6 +30,7 @@ class UserService: UserDetailsService {
             .orElseThrow()
 
         val roles: List<SimpleGrantedAuthority> = usuario.roles
+            ?.split(",")
             ?.map { rol -> SimpleGrantedAuthority("ROLE_" + rol) }
             ?.toList() ?: listOf()
 
@@ -68,8 +69,7 @@ class UserService: UserDetailsService {
     }
 
     fun update(updateUser: Usuario): Usuario{
-        val usuario = updateUser.id?.let { userRespository.findById(it).orElseThrow{UserNotFoundException("No se encontró al usuario")}}
-
+        val usuario = userRespository.findByUsername(updateUser.username).orElseThrow{UserNotFoundException("No se encontró al usuario con nombre: ${updateUser.username}")}
         if (usuario != null) {
             usuario.username = updateUser.username
             usuario.password = passwordEncoder.encode(updateUser.password)

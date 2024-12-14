@@ -72,7 +72,7 @@ class UserController {
         return ResponseEntity(user, HttpStatus.OK)
     }
 
-    @PutMapping("/update/{username}")
+    @PutMapping("/update")
     fun update(
         @RequestBody userUpdate: Usuario?
     ): ResponseEntity<Usuario>?{

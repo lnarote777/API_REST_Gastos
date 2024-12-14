@@ -16,7 +16,7 @@ class TipoGastoService {
 
     fun newTipo(newTipo: TipoGasto): TipoGasto {
 
-        val tipo = tipoGastoReppository.findById(newTipo.id!!)
+        val tipo = tipoGastoReppository.findByName(newTipo.name)
 
         if (tipo.isPresent) {
             throw BadRequestException("El tipo de gasto ya existe.")

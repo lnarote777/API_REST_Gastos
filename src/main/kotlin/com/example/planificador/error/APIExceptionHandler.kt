@@ -3,6 +3,9 @@ package com.example.planificador.error
 
 import com.es.sessionsecurity.error.ErrorRespuesta
 import com.example.planificador.error.exception.BadRequestException
+import com.example.planificador.error.exception.GastoNotFoundException
+import com.example.planificador.error.exception.TipoNotFoundException
+import com.example.planificador.error.exception.UserNotFoundException
 import jakarta.servlet.http.HttpServletRequest
 import org.springframework.data.crossstore.ChangeSetPersister
 import org.springframework.http.HttpStatus
@@ -26,7 +29,10 @@ class APIExceptionHandler {
     }
 
 
-    @ExceptionHandler(ChangeSetPersister.NotFoundException::class)
+    @ExceptionHandler(ChangeSetPersister.NotFoundException::class,
+        UserNotFoundException::class,
+        GastoNotFoundException::class,
+        TipoNotFoundException::class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ResponseBody
     fun handleNotFound(request: HttpServletRequest, e: Exception) : ErrorRespuesta {

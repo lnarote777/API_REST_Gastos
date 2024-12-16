@@ -43,9 +43,12 @@ class SecurityConfig {
                 .requestMatchers("/tipos/nuevo_tipo").hasRole("ADMIN")
                 .requestMatchers(HttpMethod.DELETE,"/tipos/delete/{name}").hasRole("ADMIN")
                 .requestMatchers("/tipos/").authenticated()
+                .requestMatchers("/tipos/update").hasRole("ADMIN")
                 //users
                 .requestMatchers("/usuarios/login").permitAll()
                 .requestMatchers("/usuarios/register").permitAll()
+                .requestMatchers("/usuarios/update").hasRole("ADMIN")
+                .requestMatchers("/usuarios/delete/{username}").hasRole("ADMIN")
                 .anyRequest().permitAll()
 
             }

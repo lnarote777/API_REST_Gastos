@@ -105,6 +105,7 @@ Aquí se almacenarán todos los datos respecto al gasto.
 | Gasto diario no encontrado  | 404    | `GastoNotFoundException` |
 | Tipo de gasto no encontrado | 404    | `TipoNotFoundException`  |
 | Datos inválidos             | 400    | `BadRequestException`    |
+| Usuario existente           | 400    | `UserExistException`     |
 | Sin autorización            | 401    | `NotAuthorizedException` |
 
 ## Restricciones de seguridad

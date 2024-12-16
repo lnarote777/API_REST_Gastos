@@ -2,7 +2,6 @@ package com.example.planificador.controller
 
 import com.example.planificador.error.exception.BadRequestException
 import com.example.planificador.model.Usuario
-import com.example.planificador.repository.UsuarioRepository
 import com.example.planificador.service.TokenService
 import com.example.planificador.service.UserService
 import org.springframework.beans.factory.annotation.Autowired
@@ -10,9 +9,7 @@ import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
-import org.springframework.security.core.Authentication
 import org.springframework.web.bind.annotation.*
-import javax.naming.AuthenticationException
 
 @RestController
 @RequestMapping("/usuarios")
@@ -32,12 +29,7 @@ class UserController {
         @RequestBody user : Usuario
     ): ResponseEntity<Any>?
     {
-        val authentication: Authentication
-        try {
-            authentication = authenticationManager.authenticate(UsernamePasswordAuthenticationToken(user.username, user.password))
-        }catch (e : AuthenticationException){
-            return ResponseEntity(mapOf("mensaje" to " Credenciales incorrectas"), HttpStatus.UNAUTHORIZED)
-        }
+        val authentication = authenticationManager.authenticate(UsernamePasswordAuthenticationToken(user.username, user.password))
 
         var token = ""
         token = tokenService.generarToken(authentication)

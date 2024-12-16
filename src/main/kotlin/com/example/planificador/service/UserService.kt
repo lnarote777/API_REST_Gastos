@@ -1,5 +1,6 @@
 package com.example.planificador.service
 
+import com.example.planificador.error.exception.UserExistException
 import com.example.planificador.error.exception.UserNotFoundException
 import com.example.planificador.model.Usuario
 import com.example.planificador.repository.UsuarioRepository
@@ -27,7 +28,7 @@ class UserService: UserDetailsService {
 
         val usuario = userRespository
             .findByUsername(username!!)
-            .orElseThrow()
+            .orElseThrow{BadRequestException("Credenciales erróneas")}
 
         val roles: List<SimpleGrantedAuthority> = usuario.roles
             ?.split(",")
@@ -46,8 +47,8 @@ class UserService: UserDetailsService {
         val user = userRespository
             .findByUsername(newUsuario.username)
 
-        if (user.isPresent()) {
-            throw BadRequestException("Usuario existente")
+        if (user.isPresent) {
+            throw UserExistException("Usuario existente")
         }
 
         if(newUsuario.password.isBlank() || newUsuario.username.isBlank()) {

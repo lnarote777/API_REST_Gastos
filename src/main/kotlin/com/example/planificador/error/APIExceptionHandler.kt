@@ -2,13 +2,11 @@ package com.example.planificador.error
 
 
 import com.es.sessionsecurity.error.ErrorRespuesta
-import com.example.planificador.error.exception.BadRequestException
-import com.example.planificador.error.exception.GastoNotFoundException
-import com.example.planificador.error.exception.TipoNotFoundException
-import com.example.planificador.error.exception.UserNotFoundException
+import com.example.planificador.error.exception.*
 import jakarta.servlet.http.HttpServletRequest
 import org.springframework.data.crossstore.ChangeSetPersister
 import org.springframework.http.HttpStatus
+import org.springframework.security.authentication.BadCredentialsException
 import org.springframework.web.bind.annotation.ControllerAdvice
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.ResponseBody
@@ -21,7 +19,9 @@ class APIExceptionHandler {
     @ExceptionHandler(
         IllegalArgumentException::class
         , NumberFormatException::class
-        , BadRequestException::class)
+        , BadRequestException::class,
+        UserExistException::class,
+        BadCredentialsException::class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ResponseBody
     fun handleBadRequest(request: HttpServletRequest, e: Exception) : ErrorRespuesta {

@@ -25,6 +25,8 @@ class APIExceptionHandler {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ResponseBody
     fun handleBadRequest(request: HttpServletRequest, e: Exception) : ErrorRespuesta {
+        println("llega")
+
         return ErrorRespuesta(e.message!!, request.requestURI)
     }
 

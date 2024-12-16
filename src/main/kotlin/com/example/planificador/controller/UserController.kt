@@ -26,9 +26,14 @@ class UserController {
 
     @PostMapping("/login")
     fun login(
-        @RequestBody user : Usuario
+        @RequestBody user : Usuario?
     ): ResponseEntity<Any>?
     {
+        if (user == null){
+            throw BadRequestException("El parámetro no puede estar vacío.")
+        }
+        userService.comprobarUser(user)
+
         val authentication = authenticationManager.authenticate(UsernamePasswordAuthenticationToken(user.username, user.password))
 
         var token = ""

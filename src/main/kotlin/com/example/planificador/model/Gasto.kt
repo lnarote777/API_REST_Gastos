@@ -23,7 +23,7 @@ data class Gasto(
     var cantidad: Double,
 
     @Column(nullable = false)
-    var fecha: LocalDateTime,
+    var fecha: LocalDateTime?,
 
     @Column
     var comentario: String? = null

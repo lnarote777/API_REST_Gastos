@@ -1,13 +1,11 @@
 package com.example.planificador.service
 
+import com.example.planificador.error.exception.BadRequestException
 import com.example.planificador.error.exception.UserExistException
 import com.example.planificador.error.exception.UserNotFoundException
 import com.example.planificador.model.Usuario
 import com.example.planificador.repository.UsuarioRepository
-import org.apache.coyote.BadRequestException
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.data.repository.findByIdOrNull
-import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.core.userdetails.User
 import org.springframework.security.core.userdetails.UserDetails
@@ -51,16 +49,13 @@ class UserService: UserDetailsService {
             throw UserExistException("Usuario existente")
         }
 
-        if(newUsuario.password.isBlank() || newUsuario.username.isBlank()) {
-            throw BadRequestException("Los campos nombre y password son obligatorios")
-        }else if (newUsuario.roles != "ADMIN" && newUsuario.roles != "USER") {
-            throw BadRequestException("El campo rol es obligatorio")
-        }
+        comprobarUser(newUsuario)
 
         newUsuario.password = passwordEncoder.encode(newUsuario.password)
         userRespository.save(newUsuario)
 
         return newUsuario
+
     }
 
     fun delete(username: String): Usuario {
@@ -70,6 +65,7 @@ class UserService: UserDetailsService {
     }
 
     fun update(updateUser: Usuario): Usuario{
+        comprobarUser(updateUser)
         val usuario = userRespository.findByUsername(updateUser.username).orElseThrow{UserNotFoundException("No se encontró al usuario con nombre: ${updateUser.username}")}
         if (usuario != null) {
             usuario.username = updateUser.username
@@ -86,5 +82,13 @@ class UserService: UserDetailsService {
     fun getByName(username: String): Usuario {
         val usuario = userRespository.findByUsername(username).orElseThrow{UserNotFoundException("No se encontro al usuario con nombre: $username")}
         return usuario
+    }
+
+    fun comprobarUser(user: Usuario): Boolean{
+        return if(user.password.isBlank() || user.username.isBlank()) {
+            throw BadRequestException("Los campos nombre y password son obligatorios")
+        }else if (user.roles != "ADMIN" && user.roles != "USER" || user.roles.isNullOrEmpty()) {
+            throw BadRequestException("El campo rol es obligatorio (solo pueden ser ADMIN o USER)")
+        }else{ true }
     }
 }

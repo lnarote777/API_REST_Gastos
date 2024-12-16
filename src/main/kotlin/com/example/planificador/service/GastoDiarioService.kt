@@ -22,27 +22,31 @@ class GastoDiarioService {
     private lateinit var tipoGastoService: TipoGastoService
 
     fun newGastoDiario(newGasto: Gasto):Gasto{
-        if (comprobarDatos(newGasto)){
-            return gastoDiarioRepository.save(newGasto)
-        }
-        throw BadRequestException("")
+        comprobarDatos(newGasto)
 
+        return gastoDiarioRepository.save(newGasto)
     }
 
     fun update(gastoUpdate: Gasto): Gasto{
-        if (comprobarDatos(gastoUpdate)){
-            val gasto = gastoUpdate.id ?.let { gastoDiarioRepository.findById(it).orElseThrow { GastoNotFoundException("No se encontró ningún gasto con el id: $it") } }
-            if (gasto != null){
-                gasto.tipo = gastoUpdate.tipo
-                gasto.fecha = gastoUpdate.fecha
-                gasto.cantidad = gastoUpdate.cantidad
-                gasto.name = gastoUpdate.name
-                gasto.comentario = gastoUpdate.comentario
-                return gastoDiarioRepository.save(gasto)
-            }
+
+        comprobarDatos(gastoUpdate)
+
+        val gasto = gastoUpdate.id ?.let { gastoDiarioRepository.findById(it).orElseThrow { GastoNotFoundException("No se encontró ningún gasto con el id: $it") } }
+
+        if (gasto == null) {
             throw GastoNotFoundException("No se encontró ningún gasto con el id: ${gastoUpdate.id}")
         }
-        throw BadRequestException("")
+
+        gasto.tipo = gastoUpdate.tipo
+        gasto.fecha = gastoUpdate.fecha
+        gasto.cantidad = gastoUpdate.cantidad
+        gasto.name = gastoUpdate.name
+        gasto.comentario = gastoUpdate.comentario
+
+        return gastoDiarioRepository.save(gasto)
+
+
+
     }
 
     fun delete(id: String):Gasto{
@@ -70,7 +74,7 @@ class GastoDiarioService {
         val tipo = tipoGastoService.getTipoGasto(gasto.tipo.name)
         if (gasto.name.isBlank()){
             throw BadRequestException("Nombre o tipo inválidos.")
-        }else if (gasto.fecha.isAfter(LocalDateTime.now())){
+        }else if (gasto.fecha?.isAfter(LocalDateTime.now()) == true || gasto.fecha == null){
             throw BadRequestException("La fecha no puede ser posterior a la fecha actual")
         }else if (gasto.cantidad < 0.0){
             throw BadRequestException("La cantidad debe se un número positivo")
